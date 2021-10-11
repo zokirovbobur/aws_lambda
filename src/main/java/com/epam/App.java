@@ -5,14 +5,12 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 
 import java.util.LinkedHashMap;
 
-public class App implements RequestHandler<Object, Object>
-{
+public class App implements RequestHandler<Object, Object> {
 	private DynamoConnector connector = new DynamoConnector();
 
 	@Override
 	public Object handleRequest(Object input, Context context) {
-		System.out.println("Hello world");
-		return "Hello world";
+		return staticTest(input, context);
 	}
 
 	public Object staticTest(Object input, Context context) {
