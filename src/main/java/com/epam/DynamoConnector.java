@@ -9,7 +9,7 @@ public class DynamoConnector {
     private final DynamoDB dynamoDB = new DynamoDB(AmazonDynamoDBClientBuilder.defaultClient());
     private String tableName = "TableNo1";
 
-    public String staticTest(Product product){
+    public String staticTest(){
         Table table = dynamoDB.getTable(tableName);
         Item item = new Item().withPrimaryKey("id", "8")
                 .withString("price", "16");

@@ -4,22 +4,22 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
 @DynamoDBTable(tableName = "TableNo1")
 public class Product {
-    private long id;
+    private String id;
     private String price;
 
     public Product() {
     }
 
-    public Product(long id, String price) {
+    public Product(String id, String price) {
         this.id = id;
         this.price = price;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -29,5 +29,13 @@ public class Product {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                       "id='" + id + '\'' +
+                       ", price='" + price + '\'' +
+                       '}';
     }
 }
