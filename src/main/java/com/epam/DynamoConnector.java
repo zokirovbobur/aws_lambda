@@ -9,15 +9,15 @@ public class DynamoConnector {
     private final DynamoDB dynamoDB = new DynamoDB(AmazonDynamoDBClientBuilder.defaultClient());
     private String tableName = "TableNo1";
 
-    public String updateProduct(Product product){
+    public String staticTest(Product product){
         Table table = dynamoDB.getTable(tableName);
-        Item item = new Item().withPrimaryKey("id", "6")
+        Item item = new Item().withPrimaryKey("id", "8")
                 .withString("price", "16");
         System.out.println("table.putItem(item): " + table.putItem(item));
         return dynamoDB.getTable(tableName).describe().toString();
     }
 
-    public String insertProduct(Product product){
+    public String dynamicTest(Product product){
         Table table = dynamoDB.getTable(tableName);
         Item item = new Item().withPrimaryKey("id", product.getId())
                 .withString("price", "14");
