@@ -2,6 +2,8 @@ package com.epam;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.LinkedHashMap;
 
@@ -27,13 +29,18 @@ public class App implements RequestHandler<Object, Object> {
 	}
 
 	public Product fromInput(Object input){
-		LinkedHashMap<String, String> map = (LinkedHashMap)input;
+        System.out.println("========object transformation block===========");
+		LinkedHashMap<String, Object> map = (LinkedHashMap)input;
 		System.out.println("map: " + map);
-		String id = map.get("id");
-		String price = map.get("price");
-        System.out.println("id: " + id);
-		System.out.println("price: " + price);
-		Product product = new Product(id,price);
+		String body = (String)map.get("body");
+        System.out.println("body: " + body);
+		Product product = new Product();
+		ObjectMapper objectMapper = new ObjectMapper();
+		try {
+			product = objectMapper.readValue(body, Product.class);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
 		System.out.println("product: " + product);
 		return product;
 	}
