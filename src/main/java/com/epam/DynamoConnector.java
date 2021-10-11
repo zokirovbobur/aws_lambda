@@ -7,7 +7,7 @@ import com.amazonaws.services.dynamodbv2.document.Table;
 
 public class DynamoConnector {
     private final DynamoDB dynamoDB = new DynamoDB(AmazonDynamoDBClientBuilder.defaultClient());
-    private String tableName = "TableNo1";
+    private String tableName = "products";
 
     public String staticTest(){
         Table table = dynamoDB.getTable(tableName);
@@ -20,7 +20,7 @@ public class DynamoConnector {
     public String dynamicTest(Product product){
         Table table = dynamoDB.getTable(tableName);
         Item item = new Item().withPrimaryKey("id", product.getId())
-                .withString("price", "14");
+                .withString("price", product.getPrice());
         System.out.println("table.putItem(item): " + table.putItem(item));
         return dynamoDB.getTable(tableName).describe().toString();
     }

@@ -2,7 +2,7 @@ package com.epam;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
-@DynamoDBTable(tableName = "TableNo1")
+@DynamoDBTable(tableName = "products")
 public class Product {
     private String id;
     private String price;
