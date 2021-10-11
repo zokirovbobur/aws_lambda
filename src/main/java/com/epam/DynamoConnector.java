@@ -4,24 +4,29 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.Table;
+import com.amazonaws.services.dynamodbv2.document.spec.UpdateItemSpec;
+import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
+import com.amazonaws.services.dynamodbv2.model.ReturnValue;
 
 public class DynamoConnector {
     private final DynamoDB dynamoDB = new DynamoDB(AmazonDynamoDBClientBuilder.defaultClient());
-    private String tableName = "products";
+    private final Table table = dynamoDB.getTable("products");
 
-    public String staticTest(){
-        Table table = dynamoDB.getTable(tableName);
-        Item item = new Item().withPrimaryKey("id", "8")
-                .withString("price", "16");
-        System.out.println("table.putItem(item): " + table.putItem(item));
-        return dynamoDB.getTable(tableName).describe().toString();
-    }
-
-    public String dynamicTest(Product product){
-        Table table = dynamoDB.getTable(tableName);
+    public String createProduct(Product product){
         Item item = new Item().withPrimaryKey("id", product.getId())
                 .withString("price", product.getPrice());
         System.out.println("table.putItem(item): " + table.putItem(item));
-        return dynamoDB.getTable(tableName).describe().toString();
+        return "done";
+    }
+
+    public String updateProduct(Product product){
+        UpdateItemSpec updateItemSpec = new UpdateItemSpec().withPrimaryKey("id", product.getId(), "price", product.getPrice())
+                .withUpdateExpression("set product_name = :n, picture_url = :p")
+                .withValueMap(new ValueMap()
+                        .withString(":n", product.getProductName())
+                        .withString(":p", product.getPictureUrl()))
+                .withReturnValues(ReturnValue.UPDATED_NEW);
+        System.out.println("table.updateItem(item): " + table.updateItem(updateItemSpec));
+        return "done";
     }
 }

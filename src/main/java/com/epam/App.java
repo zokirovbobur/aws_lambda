@@ -12,23 +12,30 @@ public class App implements RequestHandler<Object, Object> {
 
 	@Override
 	public Object handleRequest(Object input, Context context) {
-		return staticTest(input, context);
-	}
-
-	public Object staticTest(Object input, Context context) {
-		System.out.println("input: " + input);
-		System.out.println("context.getAwsRequestId(): " + context.getAwsRequestId());
-		return connector.staticTest();
-	}
-
-	public Object dynamicTest(Object input, Context context) {
 		System.out.println("input: " + input);
 		System.out.println("context.getAwsRequestId(): " + context.getAwsRequestId());
 		Product product = fromInput(input);
-		return connector.dynamicTest(product);
+		if (product.getMethodType().equals("create")){
+			return createProduct(product);
+		} else if(product.getMethodType().equals("update")){
+			return updateProduct(product);
+		} else {
+			return "methodType is incorrect";
+		}
+
 	}
 
-	public Product fromInput(Object input){
+	public Object createProduct(Product product) {
+		System.out.println("========createProduct block===========");
+		return connector.createProduct(product);
+	}
+
+	public Object updateProduct(Product product) {
+		System.out.println("========updateProduct block===========");
+		return connector.updateProduct(product);
+	}
+
+	private Product fromInput(Object input){
         System.out.println("========object transformation block===========");
 		LinkedHashMap<String, Object> map = (LinkedHashMap)input;
 		System.out.println("map: " + map);
@@ -41,7 +48,7 @@ public class App implements RequestHandler<Object, Object> {
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
-		System.out.println("product: " + product);
+		System.out.println("product after transformation: " + product);
 		return product;
 	}
 }
