@@ -14,36 +14,6 @@ public class RestApiRequestHandler implements RequestStreamHandler {
 	private DynamoConnector dynamoConnector = new DynamoConnector();
 	static Logger logger = Logger.getLogger(RestApiRequestHandler.class.getName());
 
-	public void handleRequestOld(InputStream inputStream, OutputStream outputStream, Context context) {
-		logger.warning("START OF REQUEST HANDLING");
-		try {
-			Product product = requestReader(inputStream);
-			logger.info("product entity: " + product);
-			String response = null;
-			if (product != null){
-				logger.info("product is not null");
-				if (product.getMethodType().equals("create")){
-					response = dynamoConnector.createProduct(product);
-					logger.info("product create: " + response);
-					responseWriter(outputStream, 200, "New item has been created", response);
-				} else if(product.getMethodType().equals("update")){
-					response = dynamoConnector.updateProduct(product);
-					logger.info("product update: " + response);
-					responseWriter(outputStream, 200, "Item has been updated", response);
-				} else {
-					logger.info("methodType is incorrect: " + product);
-					responseWriter(outputStream, 400, "methodType is incorrect", null);
-				}
-			} else {
-				logger.info("body is null");
-				responseWriter(outputStream, 400, "body is null", null);
-			}
-		} catch (ParseException | IOException pex) {
-			pex.printStackTrace();
-			responseWriter(outputStream, 400, "exception", pex.toString());
-		}
-	}
-
 	@Override
 	public void handleRequest(
 		InputStream inputStream, OutputStream outputStream, Context context) {
@@ -102,23 +72,6 @@ public class RestApiRequestHandler implements RequestStreamHandler {
 		}
 		logger.info("requestReader body is empty");
 		return null;
-	}
-
-	private void responseWriter(OutputStream outputStream, int statusCode, String message, String body){
-		OutputStreamWriter writer = null;
-		try {
-			writer = new OutputStreamWriter(outputStream, "UTF-8");
-			JSONObject responseJson = new JSONObject();
-			responseJson.put("statusCode", statusCode);
-			JSONObject responseBody = new JSONObject();
-			responseBody.put("message", message);
-			responseJson.put("body", responseBody);
-
-			writer.write(responseJson.toString());
-			writer.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	private JSONObject responseMaker(int statusCode, String message, Object data){
