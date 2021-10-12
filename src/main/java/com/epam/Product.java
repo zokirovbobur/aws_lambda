@@ -1,6 +1,10 @@
 package com.epam;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.LinkedHashMap;
 
 @DynamoDBTable(tableName = "products")
 public class Product {
@@ -16,6 +20,20 @@ public class Product {
     public Product(String id, String price) {
         this.id = id;
         this.price = price;
+    }
+
+    public static Product fromJSON(String json) {
+        System.out.println("========json to object transformation block===========");
+        Product product = new Product();
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            product = objectMapper.readValue(json, Product.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("product after transformation: " + product);
+        return product;
     }
 
     public String getId() {
@@ -67,5 +85,22 @@ public class Product {
                        ", name='" + productName + '\'' +
                        ", pictureUrl='" + pictureUrl + '\'' +
                        '}';
+    }
+
+    public static Product toProduct(Object input){
+        System.out.println("========object transformation block===========");
+        LinkedHashMap<String, Object> map = (LinkedHashMap)input;
+        System.out.println("map: " + map);
+        String body = (String)map.get("body");
+        System.out.println("body: " + body);
+        Product product = new Product();
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            product = objectMapper.readValue(body, Product.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        System.out.println("product after transformation: " + product);
+        return product;
     }
 }

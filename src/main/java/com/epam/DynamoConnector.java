@@ -13,6 +13,7 @@ public class DynamoConnector {
     private final Table table = dynamoDB.getTable("products");
 
     public String createProduct(Product product){
+        System.out.println("========createProduct block===========");
         Item item = new Item().withPrimaryKey("id", product.getId())
                 .withString("price", product.getPrice());
         System.out.println("table.putItem(item): " + table.putItem(item));
@@ -20,6 +21,7 @@ public class DynamoConnector {
     }
 
     public String updateProduct(Product product){
+        System.out.println("========updateProduct block===========");
         UpdateItemSpec updateItemSpec = new UpdateItemSpec().withPrimaryKey("id", product.getId(), "price", product.getPrice())
                 .withUpdateExpression("set product_name = :n, picture_url = :p")
                 .withValueMap(new ValueMap()
