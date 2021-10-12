@@ -1,4 +1,4 @@
 com/epam/Product.class
 com/epam/DynamoConnector.class
-com/epam/RestApiRequestHandler.class
-com/epam/HttpApiRequestHandler.class
+com/epam/HttpApiHandler.class
+com/epam/RestApiHandler.class

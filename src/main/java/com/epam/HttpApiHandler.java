@@ -3,7 +3,7 @@ package com.epam;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 
-public class HttpApiRequestHandler implements RequestHandler<Object, Object> {
+public class HttpApiHandler implements RequestHandler<Object, Object> {
 	private DynamoConnector connector = new DynamoConnector();
 
 	@Override

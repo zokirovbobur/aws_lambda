@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * Unit test for simple App.
  */
-public class HttpApiRequestHandlerTest
+public class HttpApiHandlerTest
 {
     /**
      * Rigorous Test :-)

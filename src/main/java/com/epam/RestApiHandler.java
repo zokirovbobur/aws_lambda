@@ -10,9 +10,9 @@ import org.json.simple.parser.ParseException;
 import java.io.*;
 import java.util.logging.Logger;
 
-public class RestApiRequestHandler implements RequestStreamHandler {
+public class RestApiHandler implements RequestStreamHandler {
 	private DynamoConnector dynamoConnector = new DynamoConnector();
-	static Logger logger = Logger.getLogger(RestApiRequestHandler.class.getName());
+	static Logger logger = Logger.getLogger(RestApiHandler.class.getName());
 
 	@Override
 	public void handleRequest(
